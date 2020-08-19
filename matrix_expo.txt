@@ -1,0 +1,40 @@
+class matrix_expo {
+	private:
+		int n;
+		int sz;
+		vector<vi> res;
+	public:
+		vector<vi> tm;
+		matrix_expo(int n, int sz){
+			this->n=n;
+			this->sz=sz;
+			res=vector<vi>(sz,vi(sz));tm=vector<vi>(sz,vi(sz));
+			for(int i=0; i<sz; i++)
+				for(int j=0; j<sz; j++){
+					if(i==j)
+						res[i][j]=1;
+				}
+		}
+
+		void multiply(vector<vi> &a){
+			vector<vi> tmp(sz,vi(sz));
+			for(int i=0; i<sz; i++)
+				for(int j=0; j<sz; j++)
+					for(int k=0; k<sz; k++)
+						tmp[i][j]=(tmp[i][j] + (a[i][k]*tm[k][j])%INF)%INF;
+			a=tmp;		
+		}
+
+		void bin_expo(int k){
+			while(k){
+				if(k&1)
+					multiply(res);
+				multiply(tm);
+				k>>=1;
+			}
+		}
+		int init(int pow){
+			bin_expo(pow);
+			return (res[0][0])%INF;
+		}
+};
