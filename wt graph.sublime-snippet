@@ -1,0 +1,106 @@
+<snippet>
+	<content><![CDATA[
+class Graph{
+	private:  int size;
+			vector<vi> adj;
+			vector<vector<pi>> adj2;
+	public: 
+			Graph(int size){
+				this->size=size;
+				adj=vector<vi>(size);
+				adj2=vector<vector<pi>>(size);
+
+			}
+			
+			void addedge(int a, int b){
+				adj[a].pb(b);
+				adj[b].pb(a);
+			}
+			void addWedge(int a, int b, int cost, bool bidir=true){
+				adj2[a].pb({b,cost});
+				if(bidir)
+					adj2[b].pb({a,cost});
+			}
+			void printGraph(){
+				for(int i=0; i<size; i++){
+					cout<<i<<" -> ";
+					for(auto node:adj2[i]){
+						cout<<"{"<<node.ff<<","<<node.ss<<"}";
+					}
+					cout<<"\n";
+				}
+			}
+			/** O(N*LOG(N)) **/
+			vi dijkstra(int src){
+				vi dist(size);
+				set<pi> s;
+				for(int i=0; i<size; i++)dist[i]=inf;
+				dist[src]=0;
+				s.insert({dist[src],src});
+				while(!s.empty()){
+					auto tmp=*(s.begin());
+					s.erase(s.begin());
+					for(auto node:adj2[tmp.ss]){
+						if(tmp.ff+node.ss<dist[node.ff]){
+							auto chk=s.find({dist[node.ff],node.ff});
+							if(chk!=s.end())
+								s.erase(chk);
+							s.insert({tmp.ff+node.ss,node.ff});
+							dist[node.ff]=tmp.ff+node.ss;
+						}
+					}
+				}
+				return dist;
+			}
+			/** O(N*N) **/
+			vi bellmanford(int src){
+				vi dist(size,inf);
+				dist[src]=0;
+				for(int i=0; i<size-1; i++){
+					for(int j=0; j<size; j++){
+						for(auto node:adj2[j]){
+							if(dist[j]!=inf&&dist[node.ff]>dist[j]+node.ss)
+								dist[node.ff]=dist[j]+node.ss;
+						}
+					}
+				}
+				return dist;
+			}
+			/** O(N*N*N) **/
+	/** Check the constraints,multi-source dijkstra might be better than floyd-warshall  **/		
+			vector<vi> floydwarshall(){
+				vector<vi> dp(size,vi(size));
+				for(int i=0; i<size; i++){
+					for(int j=0; j<size; j++){
+						dp[i][j]=inf;
+						if(i==j)dp[i][j]=0;
+					}
+					
+				}
+				for(int i=0; i<size; i++){
+					for(auto node:adj2[i]){
+						dp[i][node.ff]=min(dp[i][node.ff],node.ss);
+					}
+				}
+				
+				for(int k=0; k<size; k++){
+					for(int i=0; i<size; i++){
+						for(int j=0; j<size; j++){
+							if(i==k||j==k||i==j)continue;
+							dp[i][j]=min(dp[i][j],(dp[i][k]==inf||dp[k][j]==inf)?inf:dp[i][k]+dp[k][j]);
+						}
+						
+					}
+				}
+				return dp;
+			}
+
+
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>wt graph</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
