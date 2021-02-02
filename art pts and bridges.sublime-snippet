@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+/*** disc[],low[],time to be declared and initialised and 0-base indexing to be used***/
+void dfs(int cur, int par){
+	disc[cur]=low[cur]=time++;
+	for(auto child: adj[cur]){
+		if(disc[child]==0){
+			dfs(child,cur);
+			low[cur]=min(low[cur],low[child]);
+			if(cur!=0&&low[child]>=dis[cur]){
+				// articulation point reached.. do something
+			} 
+			if(low[child]>dis[cur]){
+				// cur -> child edge is a brige... do something
+			} 
+		}
+		else if(child!=par){
+			low[cur]=min(low[cur],low[child]);
+
+		}
+	}
+	if(cur==0&&adj[cur].size()>1){
+		// root is an articulation point... do something
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>art pts</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
