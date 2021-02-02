@@ -1,0 +1,25 @@
+<snippet>
+	<content><![CDATA[
+/*** Update func does not change a value but increass it by val ***/
+/*** bit and sz to be initialised ***/
+/*** indexing should start from 1 not from 0 ***/
+void update(int idx, int val){
+	while(idx<=sz){
+		bit[idx]+=val;
+		idx+=(idx&-idx);
+	}
+}
+int query(int idx){
+	int ans=0;
+	while(idx){
+		ans+=bit[idx];
+		idx-=(idx&-idx);
+	}
+	return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>fenwick tree</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
