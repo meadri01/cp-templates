@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+struct dsu{
+	vi par,size;
+	void init(int n){
+		par.resize(n);size.resize(n);
+		iota(par.begin(), par.end(), 0);
+		fill(size.begin(), size.end(), 1);
+
+	}
+	int find(int x){
+		return (x==par[x]?x:(par[x]=find(x)));
+	}
+	void unite(int x, int y){
+		x=find(x);y=find(y);
+		if(x!=y){
+			if(size[x]>size[y])swap(x,y);
+			par[x]=y;
+			size[y]+=size[x];
+		}
+	}
+	
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>dsu</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
