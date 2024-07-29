@@ -9,7 +9,7 @@ struct dsu{
 
 	}
 	int find(int x){
-		return (x==par[x]?x:(par[x]=find(x)));
+		return (x==par[x]?x:(par[x]=find(par[x])));
 	}
 	void unite(int x, int y){
 		x=find(x);y=find(y);
